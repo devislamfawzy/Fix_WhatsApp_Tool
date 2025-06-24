@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>🔐 محول الحروف العربية</title>
+    <style>
+        body {
+            direction: rtl;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #eef2f3, #dce1e4);
+            padding: 30px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            font-size: 18px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px 10px 5px 0;
+            transition: background-color 0.3s;
+        }
+
+            button:hover {
+                background-color: #2980b9;
+            }
+
+        .output {
+    direction: ltr;
+    margin-top: 20px;
+    font-size: 20px;
+    background: rgba(142, 45, 226, 0.08); /* بنفسجي فاتح شفاف */
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(142, 45, 226, 0.5);
+    white-space: pre-wrap;
+    color: #222; /* خط واضح */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(3px);
+}
+
+
+        .notice {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #a00;
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Landing Banner -->
+<!-- Enhanced Landing Banner -->
+<section style="position: relative; text-align: center; background: linear-gradient(135deg, #8E2DE2, #4A00E0); color: white; border-radius: 20px; margin-bottom: 40px; overflow: hidden;">
+    <h1 style="font-size: 42px; margin-bottom: 15px;">🔐 أداة تحويل الحروف العربية</h1>
+    <p style="font-size: 20px; margin-bottom: 25px;">حوّل النصوص المشفرة بسهولة واسترجع الحروف الأصلية بكل دقة واحترافية</p>
+    <a href="index.html" style="text-decoration: none;">
+        <button style="padding: 14px 30px; font-size: 16px; background: white; color: #4A00E0; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+            ⬅️ العودة للصفحة الرئيسية
+        </button>
+    </a>
+    <svg viewBox="0 0 500 150" preserveAspectRatio="none"
+         style="position: absolute; bottom: 0; width: 100%; height: 60px;">
+        <path d="M0.00,49.98 C150.00,150.00 349.67,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
+              style="stroke: none; fill: white;"></path>
+    </svg>
+
+    <div class="container">
+        <h2>🔐 محول الحروف العربية</h2>
+        <textarea id="inputText" placeholder="اكتب نصًا عربيًا هنا..."></textarea>
+        <button onclick="encodeByUnicode()">🔄  فك التشفير</button>
+        <button onclick="decodeToArabic()">🧩  تشفير</button>
+        <button onclick="copyOutput()">📋 نسخ</button>
+        <button onclick="downloadText()">📄 حفظ</button>
+        <button onclick="clearAll()">🗑️ حذف الكل</button>
+        <div class="output" id="output"></div>
+                <div class="notice">يرجى الانتباه: فك التشفير حساس لحالة الحرف والرمز ويجب إدخالها بدقة.</div>
+
+        <footer>
+            &copy; 2025 - تصميم وتطوير: <strong>إسلام فوزي</strong>
+        </footer>
+    </div>
+
+
+
+
+
+    
+    <script>
+        const specialMap = {
+            'آ': '"',
+            'إ': '%',
+            'أ': '#',
+            'ى': '|',
+            'ة': ')',
+            'ؤ': '@',
+            'ئ': '&'
+        };
+
+        const reverseMap = {
+            '"': 'آ',
+            '%': 'إ',
+            '#': 'أ',
+            '|': 'ى',
+            ')': 'ة',
+            '@': 'ؤ',
+            '&': 'ئ'
+        };
+
+        function encodeByUnicode() {
+            const input = document.getElementById("inputText").value;
+            let result = '';
+
+            for (let char of input) {
+                const code = char.charCodeAt(0);
+                if (specialMap[char]) {
+                    result += specialMap[char];
+                } else if (code >= 0x0620 && code <= 0x064A) {
+                    result += String.fromCharCode(code - 1536);
+                } else {
+                    result += char;
+                }
+            }
+            document.getElementById("output").innerText = result;
+        }
+
+        function decodeToArabic() {
+            const input = document.getElementById("inputText").value;
+            let result = '';
+
+            for (let char of input) {
+                if (reverseMap[char]) {
+                    result += reverseMap[char];
+                } else {
+                    const code = char.charCodeAt(0);
+                    if (code >= 0x0021 && code <= 0x007E) {
+                        result += String.fromCharCode(code + 1536);
+                    } else {
+                        result += char;
+                    }
+                }
+            }
+            document.getElementById("output").innerText = result;
+        }
+
+        function copyOutput() {
+            const output = document.getElementById("output").innerText;
+            navigator.clipboard.writeText(output);
+        }
+
+        function downloadText() {
+            const text = document.getElementById('output').innerText;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'output.txt';
+            link.click();
+        }
+
+        function clearAll() {
+            document.getElementById("inputText").value = '';
+            document.getElementById("output").innerText = '';
+        }
+    </script>
+</body>
+</html>
